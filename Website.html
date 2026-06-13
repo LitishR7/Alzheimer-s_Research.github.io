@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Litish Rajesh Deepa | Research Portfolio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f8; color: #1a202c; }
+
+        /* NAV */
+        nav {
+            background: #0d1b2e;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+        }
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 1rem 1.2rem;
+            letter-spacing: 0.03em;
+            transition: color 0.2s;
+        }
+        nav a:hover { color: #fff; }
+        nav a.active {
+            color: #fff;
+            background: #00b4d8;
+            border-radius: 4px;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #0d1b2e 0%, #0a2540 60%, #0d3060 100%);
+            color: white;
+            text-align: center;
+            padding: 3.5rem 2rem 3rem;
+            border-bottom: 3px solid #00b4d8;
+        }
+        .hero h1 { font-size: 2rem; font-weight: 700; line-height: 1.3; max-width: 700px; margin: 0 auto 0.75rem; }
+        .hero .meta { font-size: 0.9rem; color: #90cdf4; font-weight: 500; margin-bottom: 0.3rem; }
+        .hero .sub { font-size: 0.8rem; color: #64b5f6; }
+
+        /* MAIN CONTENT */
+        .page { display: none; max-width: 900px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+        .page.active { display: block; }
+
+        /* SECTION HEADERS */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0d1b2e;
+            border-bottom: 2px solid #00b4d8;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-title .icon { color: #00b4d8; margin-right: 0.4rem; }
+
+        /* FILE CARDS */
+        .file-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .file-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            background: white;
+            transition: background 0.15s;
+        }
+        .file-card-header:hover { background: #f8fafc; }
+        .file-card-left { display: flex; align-items: center; gap: 0.85rem; }
+        .file-icon {
+            width: 38px; height: 38px;
+            background: #e8f4fd;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .file-name { font-weight: 700; font-size: 0.9rem; color: #1a202c; }
+        .file-type { font-size: 0.75rem; color: #64748b; margin-top: 2px; }
+        .download-btn {
+            background: #0d1b2e;
+            color: white;
+            border: none;
+            padding: 0.45rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .download-btn:hover { background: #00b4d8; }
+        .file-card-body {
+            display: none;
+            padding: 0 1.25rem 1.25rem;
+            border-top: 1px solid #f1f5f9;
+            background: #fafbfc;
+        }
+        .file-card-body.open { display: block; }
+        .file-card-body p {
+            font-size: 0.85rem;
+            color: #475569;
+            line-height: 1.7;
+            margin-top: 0.9rem;
+        }
+
+        /* DATA FIGURES GRID */
+        .figures-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 600px) { .figures-grid { grid-template-columns: 1fr; } }
+        .figure-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1.1rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .figure-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #00b4d8;
+            margin-bottom: 0.3rem;
+        }
+        .figure-title { font-size: 0.9rem; font-weight: 700; color: #1a202c; margin-bottom: 0.5rem; }
+        .figure-card p { font-size: 0.8rem; color: #475569; line-height: 1.6; }
+
+        /* STAT BARS */
+        .stat-row { margin-bottom: 0.6rem; }
+        .stat-label { font-size: 0.72rem; color: #64748b; margin-bottom: 3px; }
+        .stat-bar-wrap { background: #e2e8f0; border-radius: 4px; height: 18px; position: relative; }
+        .stat-bar { height: 100%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; }
+        .stat-bar span { font-size: 0.68rem; font-weight: 700; color: white; }
+
+        /* ABOUT PAGE */
+        .about-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .about-card h3 { font-size: 1.05rem; font-weight: 700; color: #0d1b2e; margin-bottom: 0.75rem; }
+        .about-card p { font-size: 0.875rem; color: #475569; line-height: 1.75; margin-bottom: 0.6rem; }
+
+        /* ACKNOWLEDGMENTS */
+        .ack-person {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            padding: 1.25rem;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .ack-avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d1b2e, #00b4d8);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .ack-name { font-weight: 700; font-size: 0.9rem; color: #0d1b2e; }
+        .ack-role { font-size: 0.75rem; color: #00b4d8; font-weight: 600; margin-bottom: 0.4rem; }
+        .ack-text { font-size: 0.82rem; color: #475569; line-height: 1.65; }
+
+        /* BONUS TAB */
+        .timeline { position: relative; padding-left: 2rem; }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #00b4d8, #0d1b2e);
+        }
+        .timeline-item { position: relative; margin-bottom: 1.75rem; }
+        .timeline-dot {
+            position: absolute;
+            left: -1.85rem;
+            top: 4px;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: #00b4d8;
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px #00b4d8;
+        }
+        .timeline-date { font-size: 0.72rem; font-weight: 700; color: #00b4d8; text-transform: uppercase; letter-spacing: 0.06em; }
+        .timeline-title { font-size: 0.95rem; font-weight: 700; color: #1a202c; margin: 0.2rem 0 0.35rem; }
+        .timeline-desc { font-size: 0.82rem; color: #475569; line-height: 1.65; }
+
+        /* MEDIA BUTTONS */
+        .media-btns { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+        .media-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #0d1b2e;
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.1rem;
+            border-radius: 7px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        .media-btn:hover { background: #00b4d8; }
+
+        /* FOOTER */
+        footer {
+            background: #0d1b2e;
+            color: #64748b;
+            text-align: center;
+            padding: 1.25rem;
+            font-size: 0.78rem;
+            margin-top: 3rem;
+        }
+
+        /* LIT REVIEW SECTION */
+        .lit-excerpt {
+            background: white;
+            border-left: 4px solid #00b4d8;
+            border-radius: 0 8px 8px 0;
+            padding: 1.1rem 1.25rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.85rem;
+            color: #334155;
+            line-height: 1.75;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a>
+    <a href="#" onclick="showPage('research')" id="nav-research">Research &amp; Data</a>
+    <a href="#" onclick="showPage('about')" id="nav-about">About Me</a>
+    <a href="#" onclick="showPage('journey')" id="nav-journey">Research Journey</a>
+</nav>
+
+<!-- ========== HOME PAGE ========== -->
+<div id="page-home" class="page active">
+    <div class="hero">
+        <h1>A New Frequency: How light and sound can influence your brain in Alzheimer's</h1>
+        <p class="meta">Litish Rajesh Deepa &nbsp;·&nbsp; Independent Research G/T</p>
+        <p class="sub">February 27, 2026</p>
+    </div>
+
+    <div style="max-width:900px;margin:0 auto;padding:2.5rem 1.5rem;">
+
+        <div class="section-title"><span class="icon">📄</span>Research Abstract</div>
+        <div class="lit-excerpt">
+            Alzheimer's disease is a progressive neurodegenerative disorder characterized by cognitive decline, disrupted neural communication, and the accumulation of toxic proteins such as amyloid-beta and tau tangles. Current pharmacological approaches treat symptoms but do not reverse the underlying pathologies. Therefore, non-invasive neural entrainment has gained interest for its ability to target these root causes directly.
+        </div>
+        <div class="lit-excerpt">
+            This study reviewed and synthesized recent clinical, preclinical, and meta-analytic research on 40-Hz gamma frequency stimulation (GENUS). Evidence suggests 40-Hz stimulation results in a 40% increase in interneuron firing consistency, an 11–14% increase in cognitive task accuracy, and decreases in Alzheimer's biomarkers including plasma pTau217 by 10–27% and beta-amyloid plaque deposition by 30–53%. Other evidence showed greater hippocampal synchrony, increased microglial activation, and enhanced glymphatic clearance during stimulation, particularly when synchronized with circadian rhythms. GENUS represents an intriguing intervention to be used alongside existing pharmacological and therapeutic strategies.
+        </div>
+
+        <div class="section-title" style="margin-top:2rem;"><span class="icon">🎬</span>Informational Media &amp; Source Materials</div>
+        <p style="font-size:0.85rem;color:#475569;margin-bottom:0.75rem;">Explore the baseline clinical discoveries and multi-institutional studies connected to this research framework:</p>
+        <div class="media-btns">
+            <a href="https://www.youtube.com/watch?v=2W4ZdXOSXiI" target="_blank" class="media-btn">▶ Watch MIT GENUS Video</a>
+            <a href="https://picower.mit.edu/innovations-inventions/genus" target="_blank" class="media-btn">🏛 MIT Picower Institute Portal</a>
+            <a href="https://www.alzforum.org/news/research-news/does-flashing-light-really-lower-cortical-amyloid" target="_blank" class="media-btn">🔬 Alzforum Medical Analysis</a>
+        </div>
+    </div>
+</div>
+
+<!-- ========== RESEARCH & DATA PAGE ========== -->
+<div id="page-research" class="page">
+    <div class="hero">
+        <h1>A New Frequency: How light and sound can influence your brain in Alzheimer's</h1>
+        <p class="meta">Litish Rajesh Deepa &nbsp;·&nbsp; Independent Research G/T</p>
+        <p class="sub">February 27, 2026</p>
+    </div>
+
+    <div style="max-width:900px;margin:0 auto;padding:2.5rem 1.5rem;">
+
+        <div class="section-title"><span class="icon">📝</span>Literature Review &amp; Methodology</div>
+        <div class="lit-excerpt">
+            For more than a century, the medical community accepted the "Amyloid Cascade Hypothesis," which argued that toxic proteins and plaques caused Alzheimer's pathological symptoms. However, due to repeated failures in drug trials where plaques were cleared but patient memory did not improve, the definition of neurodegeneration has been revisited. Currently, Alzheimer's disease is regarded as a failure of the brain's communication system at the neurological level.
+        </div>
+        <div class="lit-excerpt">
+            The biomechanical process for achieving neural entrainment through GENUS is a synthesized interaction between physics and neurobiology. It operates on the foundational principle that the brain's internal electrical rhythms can be synchronized. In the case of Alzheimer's disease, this involves the delivery of synchronized 40Hz flashing lights and auditory tones, which force the primary visual and auditory cortices to fire at the exact same frequency they are being exposed to.
+        </div>
+
+        <div class="section-title" style="margin-top:2rem;"><span class="icon">📁</span>Portfolio Attached Project Files</div>
+
+        <!-- FILE 1: Research Paper -->
+        <div class="file-card">
+            <div class="file-card-header" onclick="toggleCard('card-paper')">
+                <div class="file-card-left">
+                    <div class="file-icon">📄</div>
+                    <div>
+                        <div class="file-name">Complete_Research_Paper.pdf</div>
+                        <div class="file-type">Full meta-analytical research paper</div>
+                    </div>
+                </div>
+                <a href="data:text/plain;charset=utf-8,See%20full%20paper%20content%20in%20portfolio" download="Research_Paper_Litish_Rajesh_Deepa.txt" class="download-btn" onclick="event.stopPropagation()">⬇ Download</a>
+            </div>
+            <div class="file-card-body" id="card-paper">
+                <p>This is the complete research paper investigating how 40Hz gamma-frequency sensory stimulation (GENUS) influences Alzheimer's disease pathology. It covers a full literature review of neural entrainment mechanisms, the role of gamma oscillations in cognitive health, glymphatic clearance systems, and a meta-analytical synthesis of preclinical and clinical data across five key result areas — from biomarker reduction to power spectral density verification. The paper concludes with an evaluation of GENUS as a complementary intervention alongside existing pharmacological strategies.</p>
+            </div>
+        </div>
+
+        <!-- FILE 2: Annotated Bibliography -->
+        <div class="file-card">
+            <div class="file-card-header" onclick="toggleCard('card-bib')">
+                <div class="file-card-left">
+                    <div class="file-icon">📚</div>
+                    <div>
+                        <div class="file-name">Annotated_Bibliography.pdf</div>
+                        <div class="file-type">Peer-reviewed source annotations</div>
+                    </div>
+                </div>
+                <a href="data:text/plain;charset=utf-8,Annotated%20Bibliography%20-%20See%20portfolio%20for%20full%20content" download="Annotated_Bibliography_Litish_Rajesh_Deepa.txt" class="download-btn" onclick="event.stopPropagation()">⬇ Download</a>
+            </div>
+            <div class="file-card-body" id="card-bib">
+                <p>This annotated bibliography compiles and critically analyzes the 16+ peer-reviewed sources used throughout this research, spanning publications from MIT's Picower Institute, PubMed Central, Frontiers in Neuroscience, and ClinicalTrials.gov. Each entry includes a full APA citation followed by a detailed analytical annotation explaining how the source contributed to the study's understanding of gamma oscillations, glymphatic clearance, microglial activation, and Alzheimer's biomarker reduction.</p>
+            </div>
+        </div>
+
+        <!-- FILE 3: Presentation -->
+        <div class="file-card">
+            <div class="file-card-header" onclick="toggleCard('card-slides')">
+                <div class="file-card-left">
+                    <div class="file-icon">🎞</div>
+                    <div>
+                        <div class="file-name">Mid_and_Final_Presentations.pdf</div>
+                        <div class="file-type">Mid-year &amp; final presentation slides</div>
+                    </div>
+                </div>
+                <a href="/mnt/user-data/uploads/A_New_Frequency__How_light_and_sound_can_change_your_brain.pdf" download="A_New_Frequency_Presentation_Litish_Rajesh_Deepa.pdf" class="download-btn" onclick="event.stopPropagation()">⬇ Download</a>
+            </div>
+            <div class="file-card-body" id="card-slides">
+                <p>This 21-slide presentation deck covers the full arc of the research from background on gamma waves and Alzheimer's disease to the core research question, experimental data, proposed translational devices (gamma light-bulbs and 40Hz audiovisual stimulants), epidemiological projections through 2050, and an overview of the Independent Research and Intern/Mentor program frameworks. Presented at the G/T Advanced Research mid-year showcase.</p>
+            </div>
+        </div>
+
+        <!-- META-ANALYTICAL DATA -->
+        <div class="section-title" style="margin-top:2.5rem;"><span class="icon">📊</span>Meta-Analytical Data Findings</div>
+
+        <div class="figures-grid">
+
+            <div class="figure-card">
+                <div class="figure-label">Figure 1</div>
+                <div class="figure-title">Physiological &amp; Cognitive Improvements</div>
+                <div style="margin:0.75rem 0;">
+                    <div class="stat-row">
+                        <div class="stat-label">Interneuron Firing Consistency</div>
+                        <div class="stat-bar-wrap"><div class="stat-bar" style="width:40%;background:#00b4d8;"><span>+40%</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Microglial Output Activation</div>
+                        <div class="stat-bar-wrap"><div class="stat-bar" style="width:31%;background:#0077b6;"><span>+31%</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Memory Accuracy Metrics</div>
+                        <div class="stat-bar-wrap"><div class="stat-bar" style="width:14%;background:#023e8a;"><span>+14%</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Reaction Speed Acceleration</div>
+                        <div class="stat-bar-wrap"><div class="stat-bar" style="width:11.3%;background:#0d1b2e;"><span>+11.3%</span></div></div>
+                    </div>
+                </div>
+                <p>The largest improvements are observed at the biological level — interneuron firing and immune system activation — which then translate upward into visible behavioral improvements like memory and reaction speed.</p>
+            </div>
+
+            <div class="figure-card">
+                <div class="figure-label">Figure 2</div>
+                <div class="figure-title">Impact on Core Pathology Biomarkers</div>
+                <div style="margin:0.75rem 0;font-size:0.78rem;color:#334155;">
+                    <div style="margin-bottom:0.5rem;font-weight:600;color:#64748b;font-size:0.7rem;text-transform:uppercase;">% Structural Biomarker Volume Reduction</div>
+                    <div class="stat-row">
+                        <div class="stat-label">High-Density Beta-Amyloid Regions</div>
+                        <div class="stat-bar-wrap"><div class="stat-bar" style="width:53%;background:#0077b6;"><span>-53% Plaque</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">pTau217 Reduction (Female Cohorts)</div>
+                        <div class="stat-bar-wrap"><div class="stat-bar" style="width:47%;background:#00b4d8;"><span>-47% Tau</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">Low-Density Beta-Amyloid Regions</div>
+                        <div class="stat-bar-wrap"><div class="stat-bar" style="width:30%;background:#023e8a;"><span>-30% Plaque</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-label">pTau217 Reduction (Male Cohorts)</div>
+                        <div class="stat-bar-wrap"><div class="stat-bar" style="width:19.7%;background:#0d1b2e;"><span>-19.7% Tau</span></div></div>
+                    </div>
+                </div>
+                <p>These biomarker reductions suggest GENUS is highly effective in dense plaque regions. The ~27% gap between female and male pTau217 outcomes suggests biological sex plays a major role in therapeutic responsiveness.</p>
+            </div>
+
+            <div class="figure-card">
+                <div class="figure-label">Figure 4</div>
+                <div class="figure-title">Power Spectral Density Verification</div>
+                <div style="margin:0.6rem 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:0.6rem;font-size:0.75rem;color:#475569;">
+                    <div style="font-weight:700;color:#0d1b2e;margin-bottom:0.4rem;">EEG Entrainment Peaks (Baseline vs. Active)</div>
+                    <div>🔴 1st Peak: <strong>35.156 Hz</strong> — 0.0056 µV²</div>
+                    <div>🟢 3rd Peak: <strong>42.969 Hz</strong> — 0.0026 µV²</div>
+                    <div>🔵 2nd Peak: <strong>44.922 Hz</strong> — 0.0038 µV²</div>
+                </div>
+                <p>Confirms direct neural entrainment: the brain actively synchronizes its electrical rhythms to match the 40Hz stimulation, with a dramatic spike in oscillatory power at the target frequency.</p>
+            </div>
+
+            <div class="figure-card">
+                <div class="figure-label">Figure 5</div>
+                <div class="figure-title">Predicted Metabolic Glymphatic Clearance Rate</div>
+                <div style="margin:0.6rem 0;background:#f8fafc;border:1px solid #e2e8f0;border-radius:6px;padding:0.7rem;font-size:0.75rem;">
+                    <div style="display:flex;justify-content:space-between;font-weight:700;color:#0d1b2e;margin-bottom:0.5rem;">
+                        <span>13-Hour CSF-ISF Flux Enhancement</span>
+                    </div>
+                    <div style="margin-bottom:0.3rem;color:#64748b;">Control (no treatment):</div>
+                    <div class="stat-bar-wrap" style="margin-bottom:0.5rem;"><div class="stat-bar" style="width:14%;background:#94a3b8;"><span>~14%</span></div></div>
+                    <div style="margin-bottom:0.3rem;color:#64748b;">GENUS-Enhanced:</div>
+                    <div class="stat-bar-wrap"><div class="stat-bar" style="width:80%;background:#00b4d8;"><span>~80%</span></div></div>
+                </div>
+                <p>This massive increase in glymphatic clearance supports the hypothesis that gamma entrainment addresses the roots of disease rather than just masking symptoms.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ========== ABOUT ME PAGE ========== -->
+<div id="page-about" class="page">
+    <div class="hero">
+        <h1>A New Frequency: How light and sound can influence your brain in Alzheimer's</h1>
+        <p class="meta">Litish Rajesh Deepa &nbsp;·&nbsp; Independent Research G/T</p>
+        <p class="sub">February 27, 2026</p>
+    </div>
+
+    <div style="max-width:900px;margin:0 auto;padding:2.5rem 1.5rem;">
+
+        <div class="section-title"><span class="icon">👤</span>About the Researcher</div>
+        <div class="about-card">
+            <div style="display:flex;gap:1rem;align-items:flex-start;margin-bottom:1rem;">
+                <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#00b4d8,#0d1b2e);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">🎓</div>
+                <div>
+                    <div style="font-weight:700;font-size:1rem;color:#00b4d8;">Litish Rajesh Deepa</div>
+                    <div style="font-size:0.78rem;color:#64748b;margin-top:2px;">Independent Research G/T Student</div>
+                </div>
+            </div>
+            <p>I am a student researcher in the Independent Research G/T program. My research interests sit at the intersection of biophysics, electrophysiology, engineering configurations, and clinical tracking systems for neurodegenerative presentations.</p>
+            <p>Following graduation, my professional goals involve exploring bioengineering and neuroscience avenues to design drug-free alternative health treatments, particularly non-invasive therapies that can be easily implemented at scale.</p>
+        </div>
+
+        <div class="section-title" style="margin-top:2rem;"><span class="icon">🤝</span>Acknowledgments</div>
+
+        <div class="ack-person">
+            <div class="ack-avatar">👩‍🏫</div>
+            <div>
+                <div class="ack-name">Independent Research Coordinator</div>
+                <div class="ack-role">Academic Advisor &amp; Program Coordinator</div>
+                <div class="ack-text">I would like to extend my deepest gratitude to my Independent Research coordinator for her constant support, structural guidance, and constructive critique during every step of the meta-analysis completion. Her formatting assistance, checklist parameters, and unwavering encouragement throughout this academic year made this project possible. This research could not have achieved its structure without her systemic assistance.</div>
+            </div>
+        </div>
+
+        <div class="ack-person">
+            <div class="ack-avatar">🧠</div>
+            <div>
+                <div class="ack-name">Dr. Raymond Turner</div>
+                <div class="ack-role">Research Interview Subject &amp; Expert Contributor</div>
+                <div class="ack-text">I would like to sincerely thank Dr. Raymond Turner for graciously agreeing to be interviewed as part of the primary research process for this study. His expert insights into neurodegenerative disease mechanisms, clinical trial design, and the translational challenges facing GENUS therapy provided invaluable perspective that significantly deepened the analysis presented in this paper. His time and willingness to share his knowledge were instrumental in shaping the research's conclusions.</div>
+            </div>
+        </div>
+
+        <div class="ack-person">
+            <div class="ack-avatar">🔬</div>
+            <div>
+                <div class="ack-name">MIT Picower Institute &amp; Scientific Community</div>
+                <div class="ack-role">Primary Research Foundation</div>
+                <div class="ack-text">Gratitude is also extended to the clinical investigation branches at the MIT Picower Institute for Learning and Memory, whose public publication records, open datasets, and reference models supplied the baseline quantitative metrics required to link these fragmented neuroscience discoveries into a unified exploratory paper.</div>
+            </div>
+        </div>
+
+        <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem 1.25rem;margin-top:1rem;font-size:0.78rem;color:#64748b;line-height:1.6;">
+            © Copyright Compliance Notice: Image components, primary data graphs, and structural references displayed here are managed for educational evaluation under non-commercial, fair-use academic licensing standards (Art. Regents, Batton, Baron and Behavar Advisory).
+        </div>
+    </div>
+</div>
+
+<!-- ========== RESEARCH JOURNEY PAGE (BONUS) ========== -->
+<div id="page-journey" class="page">
+    <div class="hero">
+        <h1>Research Journey</h1>
+        <p class="meta">The process behind "A New Frequency"</p>
+        <p class="sub">From initial curiosity to published conclusions — 2025–2026</p>
+    </div>
+
+    <div style="max-width:900px;margin:0 auto;padding:2.5rem 1.5rem;">
+
+        <div class="section-title"><span class="icon">🗺</span>How This Research Came Together</div>
+        <div class="lit-excerpt" style="margin-bottom:1.5rem;">
+            Behind every research paper is a process of false starts, surprising discoveries, and gradual clarity. This page documents the real journey behind this study — from the first spark of interest in Alzheimer's non-pharmacological treatments to the synthesis of data across dozens of peer-reviewed sources.
+        </div>
+
+        <div class="timeline">
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">Early Fall 2025</div>
+                <div class="timeline-title">The Initial Question</div>
+                <div class="timeline-desc">After learning about the scale of Alzheimer's disease and the consistent failures of amyloid-targeting drugs in clinical trials, the central question emerged: if clearing plaques doesn't restore memory, what actually drives the cognitive collapse? This led to the discovery of gamma oscillation research and the GENUS program at MIT.</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">October 2025</div>
+                <div class="timeline-title">Literature Deep Dive</div>
+                <div class="timeline-desc">Spent several weeks building a structured literature base from PubMed Central, ClinicalTrials.gov, and Frontiers in Neuroscience. Key foundational papers by Buzsáki &amp; Wang (2012) on gamma oscillation mechanisms and Jessen et al. (2015) on the glymphatic system became the theoretical backbone of the research design.</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">November 2025</div>
+                <div class="timeline-title">Expert Interview — Dr. Raymond Turner</div>
+                <div class="timeline-desc">Conducted a primary research interview with Dr. Raymond Turner, whose expertise in neurodegenerative disease and clinical trial methodology provided critical real-world context for the preclinical-to-human translation gap — one of the study's most important limitation findings.</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">December 2025</div>
+                <div class="timeline-title">Mid-Year Presentation</div>
+                <div class="timeline-desc">Presented initial findings to the G/T Advanced Research program, covering background on gamma waves, the core research question, early data, and proposed translational device concepts including gamma light-bulbs and audiovisual 40Hz stimulants. Received feedback that strengthened the methodology section.</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">January – February 2026</div>
+                <div class="timeline-title">Data Synthesis &amp; Analysis</div>
+                <div class="timeline-desc">Compiled and cross-referenced data from all sources into a unified analytical dataset. Constructed five figures examining physiological improvements, biomarker reductions, GENUS vs. pharmaceutical comparisons, power spectral density changes, and glymphatic clearance rates. The sex-based difference in pTau217 reduction (47% female vs. 19.7% male) was one of the most striking and unexpected findings.</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-date">February 27, 2026</div>
+                <div class="timeline-title">Final Paper Submitted</div>
+                <div class="timeline-desc">The completed meta-analytical paper, "A New Frequency: How light and sound can influence your brain in Alzheimer's," was submitted. The research concluded that GENUS, while not yet a standalone cure, represents a powerful complementary intervention that addresses Alzheimer's pathology at its neurological roots rather than merely managing symptoms.</div>
+            </div>
+
+        </div>
+
+        <div class="section-title" style="margin-top:2.5rem;"><span class="icon">💡</span>Key Takeaways from This Process</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.5rem;">
+            <div style="background:white;border:1px solid #e2e8f0;border-radius:10px;padding:1.1rem;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">🔍</div>
+                <div style="font-weight:700;font-size:0.88rem;color:#0d1b2e;margin-bottom:0.3rem;">Question Everything</div>
+                <div style="font-size:0.8rem;color:#475569;line-height:1.6;">The most interesting finding came from questioning the dominant theory — the Amyloid Cascade Hypothesis — rather than accepting it at face value.</div>
+            </div>
+            <div style="background:white;border:1px solid #e2e8f0;border-radius:10px;padding:1.1rem;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">🤝</div>
+                <div style="font-weight:700;font-size:0.88rem;color:#0d1b2e;margin-bottom:0.3rem;">Primary Sources Matter</div>
+                <div style="font-size:0.8rem;color:#475569;line-height:1.6;">Interviewing Dr. Turner added a layer of real-world nuance that no peer-reviewed paper alone could have provided.</div>
+            </div>
+            <div style="background:white;border:1px solid #e2e8f0;border-radius:10px;padding:1.1rem;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">📊</div>
+                <div style="font-weight:700;font-size:0.88rem;color:#0d1b2e;margin-bottom:0.3rem;">Data Tells a Story</div>
+                <div style="font-size:0.8rem;color:#475569;line-height:1.6;">Visualizing the five data figures made patterns — like the sex-based biomarker disparity — immediately obvious in ways that text alone couldn't convey.</div>
+            </div>
+            <div style="background:white;border:1px solid #e2e8f0;border-radius:10px;padding:1.1rem;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+                <div style="font-size:1.3rem;margin-bottom:0.4rem;">🚀</div>
+                <div style="font-weight:700;font-size:0.88rem;color:#0d1b2e;margin-bottom:0.3rem;">Science is Ongoing</div>
+                <div style="font-size:0.8rem;color:#475569;line-height:1.6;">The biggest limitation of this research is also its most exciting implication: GENUS human trials are just beginning, meaning the best findings are still ahead.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Litish Rajesh Deepa &nbsp;·&nbsp; Digital Research Portfolio &nbsp;·&nbsp; Independent Research G/T</p>
+</footer>
+
+<script>
+function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.getElementById('nav-' + id).classList.add('active');
+    window.scrollTo(0, 0);
+    return false;
+}
+function toggleCard(id) {
+    const body = document.getElementById(id);
+    body.classList.toggle('open');
+}
+</script>
+</body>
+</html>
